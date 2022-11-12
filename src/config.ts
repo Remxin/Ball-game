@@ -8,7 +8,8 @@ export default {
     board: {
         div: document.getElementById("game") as HTMLDivElement,
         height: 9,
-        width: 9
+        width: 9,
+        placeBallDelay: 1000
     },
 
     balls: {
