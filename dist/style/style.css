@@ -1,0 +1,41 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #dddddd;
+}
+
+body {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+#game {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    height: 80%;
+    border: 5px solid black;
+}
+
+.field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 11.11%;
+    height: 11.11%;
+    border: 1px solid black;
+}
+
+.ball { 
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+}  
