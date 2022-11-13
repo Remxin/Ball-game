@@ -1,6 +1,19 @@
 import config, { colorsType } from "../config";
 import Field from "./Field";
 
+/**
+ * @param locked Defines if board is locked - that means if it is locked user cannot interact with it
+ * @param highlightedFields Defines fields that are currently highlighted. If user decides to move ball all the fields gain lower opacity
+ * @method showBoard Generates board
+ * @method getRandomColors randomises 3 next collors 
+ * @method showNextColors shows randomised collors on the left information box
+ * @method resetPathFinding resets whole pathfinding except start field
+ * @method randomPlaceBalls places randomly 3 balls on earlier randomised collors
+ * @method pathFinding recursive algorithm that calculates routes while the destination field isn't found or there are no other free fields
+ * @method highlightPath highlights path found by pathFindingAlgorithm
+ * @returns Full game board and defines all fields inside it so user can start playing
+ */
+
 type pathFindingTodoArrType = {
     pos: { x: number, y: number},
     num: number
@@ -8,16 +21,18 @@ type pathFindingTodoArrType = {
 
 interface boardInterface {
     fields: Field[]
+    locked: boolean
+    highlightedFields: Field[]
 }
 
 
 class Board implements boardInterface{
-    fields: Field[]
+    public fields: Field[] 
     public ballSelected: { is: boolean, field?: Field, color?: colorsType }
-    pathFinding: { todoArr: pathFindingTodoArrType, check: boolean, startField?: Field, found: boolean }
-    locked: boolean
-    highlightedFields: Field[]
-    nextBalls: colorsType[]
+    public pathFinding: { todoArr: pathFindingTodoArrType, check: boolean, startField?: Field, found: boolean }
+    public locked: boolean
+    public highlightedFields: Field[]
+    private nextBalls: colorsType[]
 
     constructor() {
         this.fields = []
@@ -28,6 +43,8 @@ class Board implements boardInterface{
         this.locked = false
         this.nextBalls = []
     }
+
+   
 
     showBoard() {
         config.info.pointsSpan.innerText = "0"
@@ -192,7 +209,7 @@ class Board implements boardInterface{
             for (let j = 0; j < config.board.width; j++) {
                 const field = this.fields.find((f) => f.position.x === j && f.position.y === i)
                 if (!field?.ballCollor) {
-                    if (candidatesToBeatArr.length >= 4) tobeatArr.push(...candidatesToBeatArr)
+                    if (candidatesToBeatArr.length >= 5) tobeatArr.push(...candidatesToBeatArr)
                     candidatesToBeatArr = []
                     continue
                 }
@@ -202,14 +219,14 @@ class Board implements boardInterface{
                     if (field.ballCollor === lastField.ballCollor) candidatesToBeatArr.push(field)
 
                     else { 
-                        if (candidatesToBeatArr.length >= 4) tobeatArr.push(...candidatesToBeatArr) // there was +4 combo, add balls to delete
+                        if (candidatesToBeatArr.length >= 5) tobeatArr.push(...candidatesToBeatArr) // there was +5 combo, add balls to delete
                         candidatesToBeatArr = [field]
                     }
                 } else {
                     candidatesToBeatArr.push(field)
                 }
             }
-            if (candidatesToBeatArr.length >= 4) {
+            if (candidatesToBeatArr.length >= 5) {
                 tobeatArr = [...candidatesToBeatArr]
                 candidatesToBeatArr = []
             }
@@ -221,7 +238,7 @@ class Board implements boardInterface{
             for (let j = 0; j < config.board.width; j++) {
                 const field = this.fields.find((f) => f.position.x === i && f.position.y === j)
                 if (!field?.ballCollor) {
-                    if (candidatesToBeatArr.length >= 4) tobeatArr.push(...candidatesToBeatArr)
+                    if (candidatesToBeatArr.length >= 5) tobeatArr.push(...candidatesToBeatArr)
                     candidatesToBeatArr = []
                     continue
                 }
@@ -231,14 +248,14 @@ class Board implements boardInterface{
                     if (field.ballCollor === lastField.ballCollor) candidatesToBeatArr.push(field)
 
                     else { 
-                        if (candidatesToBeatArr.length >= 4) tobeatArr.push(...candidatesToBeatArr) // there was +4 combo, add balls to delete
+                        if (candidatesToBeatArr.length >= 5) tobeatArr.push(...candidatesToBeatArr) // there was +5 combo, add balls to delete
                         candidatesToBeatArr = [field]
                     }
                 } else {
                     candidatesToBeatArr.push(field)
                 }
             }
-            if (candidatesToBeatArr.length >= 4) {
+            if (candidatesToBeatArr.length >= 5) {
                 tobeatArr = [...candidatesToBeatArr]
                 candidatesToBeatArr = []
             }
@@ -251,7 +268,7 @@ class Board implements boardInterface{
                 const field = this.fields.find((f) => f.position.x === j && f.position.y === i + j)
                 
                 if (!field?.ballCollor) {
-                    if (candidatesToBeatArr.length >= 4) tobeatArr.push(...candidatesToBeatArr)
+                    if (candidatesToBeatArr.length >= 5) tobeatArr.push(...candidatesToBeatArr)
                     candidatesToBeatArr = []
                     continue
                 }
@@ -264,7 +281,7 @@ class Board implements boardInterface{
                     if (field.ballCollor === lastField.ballCollor) candidatesToBeatArr.push(field)
                     else { 
                         
-                        if (candidatesToBeatArr.length >= 4) tobeatArr.push(...candidatesToBeatArr) // there was +4 combo, add balls to delete
+                        if (candidatesToBeatArr.length >= 5) tobeatArr.push(...candidatesToBeatArr) // there was +5 combo, add balls to delete
                         candidatesToBeatArr = [field]
                         
                     }
@@ -273,7 +290,7 @@ class Board implements boardInterface{
                     candidatesToBeatArr.push(field)
                 }
             }
-            if (candidatesToBeatArr.length >= 4) {
+            if (candidatesToBeatArr.length >= 5) {
                 tobeatArr = [...candidatesToBeatArr]
                 candidatesToBeatArr = []
             }
@@ -283,7 +300,7 @@ class Board implements boardInterface{
             for (let j = 0; j < config.board.width * 2; j++) { 
                 const field = this.fields.find((f) => f.position.x === j && f.position.y === i - j)
                 if (!field?.ballCollor) {
-                    if (candidatesToBeatArr.length >= 4) tobeatArr.push(...candidatesToBeatArr)
+                    if (candidatesToBeatArr.length >= 5) tobeatArr.push(...candidatesToBeatArr)
                     candidatesToBeatArr = []
                     continue
                 }
@@ -296,7 +313,7 @@ class Board implements boardInterface{
                     if (field.ballCollor === lastField.ballCollor) candidatesToBeatArr.push(field)
                     else { 
                         
-                        if (candidatesToBeatArr.length >= 4) tobeatArr.push(...candidatesToBeatArr) // there was +4 combo, add balls to delete
+                        if (candidatesToBeatArr.length >= 5) tobeatArr.push(...candidatesToBeatArr) // there was +5 combo, add balls to delete
                         candidatesToBeatArr = [field]
                         
                     }
@@ -305,7 +322,7 @@ class Board implements boardInterface{
                     candidatesToBeatArr.push(field)
                 }
             }
-            if (candidatesToBeatArr.length >= 4) {
+            if (candidatesToBeatArr.length >= 5) {
                 tobeatArr = [...candidatesToBeatArr]
                 candidatesToBeatArr = []
             }

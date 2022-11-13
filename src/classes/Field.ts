@@ -1,6 +1,21 @@
 import config, { colorsType} from "../config"
 import { board } from "../main"
 
+/**
+ * @param x Defines field X position index
+ * @param y Defines field Y position index
+ * @param pathFinding defines if field can be tracked by board pathfinding and searchVal defines how close it is to source destination (-1 means it is too far or other fields are much closer)
+ * @param canPlace defines if user can place a ball on this field (false if on the field exists another ball)
+ * @method onmouseDown tells board that this field is our start field from which it will be calculated pathfinding algorithm
+ * @method onmouseenter tells board to which field it must calculate pathfinding algorithm
+ * @method onmouseleave tells board to reset pathfinding algorithm except the start field
+ * @method onmouseup tells board to move ball to end field and remove it from the start field 
+ * @returns By default it creates field Div and appends it to game div
+ */
+
+
+
+
 class Field {
     div: HTMLDivElement
     position: { x: number, y: number }
@@ -8,12 +23,11 @@ class Field {
     ballCollor: colorsType | null
     pathFinding: { canTrack: boolean, searchVal: number }
     p: HTMLParagraphElement
-
-
-
+    
+    
     constructor(x: number, y: number) {
         this.position = { x, y}
-        this.div= document.createElement("div")
+        this.div = document.createElement("div")
         this.canPlace = true
         this.pathFinding = { canTrack: true, searchVal: -1}
         this.ballCollor = null

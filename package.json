@@ -1,6 +1,7 @@
 {
   "devDependencies": {
     "ts-loader": "^9.4.1",
+    "typedoc": "^0.23.20",
     "webpack": "^5.75.0",
     "webpack-cli": "^4.10.0"
   },

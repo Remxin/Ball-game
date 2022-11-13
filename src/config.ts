@@ -1,7 +1,20 @@
 export type colorsType = "r" | "g" | "b" | "o" | "w" | "d" | "p"
-type colorsMapType = {
+interface colorsMapType {
     key: colorsType,
     value: string
+}
+
+interface boardInterface {
+    div: HTMLDivElement,
+    readonly height: number
+    readonly width: number
+    readonly placeBallDelay: number
+}
+
+interface ballsInterface {
+    readonly quantityPerRound: number,
+    readonly colors: colorsType[]
+    readonly colorsMap: colorsMapType[]
 }
 
 export default {
@@ -16,11 +29,11 @@ export default {
         height: 9,
         width: 9,
         placeBallDelay: 1000
-    },
+    } as boardInterface,
 
     balls: {
         quantityPerRound: 3,
-        colors: ["r", "g", "b", "o", "w", "d", "p"] as colorsType[],
+        colors: ["r", "g", "b", "o", "w", "d", "p"],
         colorsMap: [
             {
                 key: "r",
@@ -51,6 +64,6 @@ export default {
                 value: "#6a0dad"
             }
 
-        ]  as colorsMapType[]
-    }
+        ] 
+    } as ballsInterface
 }
