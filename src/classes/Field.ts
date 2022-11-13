@@ -45,13 +45,21 @@ class Field {
     }
 
     onmouseup() {
-        if (!board.pathFinding.found) return
+        if (board.locked) return
+        if (!board.pathFinding.found) {
+            board.resetPathFinding()
+            board.ballSelected.is = false
+            board.locked = false
+            return
+        }
+        board.ballSelected.color = board.ballSelected.field.ballCollor
         board.ballSelected.is = false
         board.locked = true
         board.shadePath()
+
         
         setTimeout(() => {
-            this.placeBall(board.ballSelected.field.ballCollor)
+            this.placeBall(board.ballSelected.color)
             this.canPlace = false
             board.ballSelected.field.canPlace = true
             board.ballSelected.field.ballCollor = null
@@ -59,19 +67,21 @@ class Field {
             // reset board and unlock
             board.resetPathFinding()
             board.pathFinding.startField = null
-            board.locked = false
             
-            // start another turn
-            board.nextTurn()
             
             // clear previos field
             board.ballSelected.field.clearDiv()
             board.ballSelected.field = null
+            board.locked = false
+
+            // start another turn
+            board.nextTurn()
         }, config.board.placeBallDelay)
 
     }
 
     placeBall(color: colorsType) {
+        if (this.ballCollor) return
         const ball = document.createElement('div')
         ball.classList.add("ball")
 

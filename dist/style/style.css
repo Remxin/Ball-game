@@ -11,7 +11,7 @@ body {
     width: 100%;
     height: 100vh;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
 }
 
 #game {
@@ -20,9 +20,34 @@ body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    width: 80%;
-    height: 80%;
+    width: 70%;
     border: 5px solid black;
+    aspect-ratio: 1 / 1;
+}
+
+#info {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    border: 2px solid tomato;
+    aspect-ratio: 1 / 1;
+    display: flex;
+}
+
+#nextBalls {
+    width: 100%;
+    height: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+}
+
+.info-ball {
+    width: 25%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
 }
 
 .field {
@@ -40,3 +65,45 @@ body {
     height: 80%;
     border-radius: 50%;
 }  
+
+.end-div {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #121212de;
+    color: white;
+}
+
+.end-div * {
+    background-color: transparent;
+    color: white;
+}
+
+.end-div h1 {
+    font-size: 52px;
+}
+
+.end-div p {
+    font-size: 30px;
+}
+
+.end-div button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 40px;
+    margin-top: 20px;
+    background-color: #121212;
+    border: 1px solid white;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+}

@@ -1,4 +1,4 @@
-import config from "../config";
+import config, { colorsType } from "../config";
 import Field from "./Field";
 
 type pathFindingTodoArrType = {
@@ -13,21 +13,24 @@ interface boardInterface {
 
 class Board implements boardInterface{
     fields: Field[]
-    public ballSelected: { is: boolean, field?: Field }
+    public ballSelected: { is: boolean, field?: Field, color?: colorsType }
     pathFinding: { todoArr: pathFindingTodoArrType, check: boolean, startField?: Field, found: boolean }
     locked: boolean
     highlightedFields: Field[]
+    nextBalls: colorsType[]
 
     constructor() {
         this.fields = []
         this.highlightedFields = []
-        this.ballSelected = { is: false, field: null }
+        this.ballSelected = { is: false, field: null, color: null }
         this.pathFinding = { todoArr: [], check: true, startField: null, found: false }
         this.showBoard() 
         this.locked = false
+        this.nextBalls = []
     }
 
     showBoard() {
+        config.info.pointsSpan.innerText = "0"
         for (let i = 0 ; i < config.board.height; i++) {
             for (let j = 0; j < config.board.width; j++) {
                 const field = new Field(j, i)
@@ -36,30 +39,56 @@ class Board implements boardInterface{
         }
     }
 
-    randomPlaceBalls() {
-        let freeFields
+    getRandomColors() {
+        this.nextBalls = []
+        for (let i = 0; i < config.balls.quantityPerRound; i++) {
+            const randColor = Math.floor(Math.random() * 6.99)
+            const color = config.balls.colors[randColor]
+            this.nextBalls.push(color)
+        }
+    }
 
+    randomPlaceBalls() {
+        if (this.nextBalls.length === 0) this.getRandomColors()
+        let freeFields = this.fields.filter((f) => f.canPlace)
+
+        if (freeFields.length < 3) return this.endGame()
+        
         for (let i = 0; i < config.balls.quantityPerRound; i++) {
             freeFields = this.fields.filter((f) => f.canPlace) // only blank fields
-            const randColor = Math.floor(Math.random() * 6.99)
             const randomField = Math.floor(Math.random() * (freeFields.length - 0.01))
-
-            const color = config.balls.colors[randColor]
+            
             const field = freeFields[randomField]
+            const color = this.nextBalls[i]
 
             field.placeBall(color)
             field.canPlace = false
+        }
+
+        this.getRandomColors()
+        this.showNextColors()
+    }
+
+    showNextColors() {
+        config.info.nextBallsDiv.innerHTML = ""
+
+        for (let ballCollor of this.nextBalls) {
+            const ballDiv = document.createElement("div")
+            ballDiv.style.backgroundColor = config.balls.colorsMap.find(color => color.key === ballCollor).value
+            ballDiv.classList.add("info-ball")
+
+            config.info.nextBallsDiv.appendChild(ballDiv)
         }
     }
 
     resetPathFinding() {
         this.pathFinding = { todoArr: [], check: true, found: false}
         this.highlightedFields = []
-        // this.ballSelected = { is: false, field: null}
         for (let field of this.fields) {
             field.pathFinding = { searchVal: -1, canTrack: true}
             field.unhighlight()
         }
+
     }
 
     findPath(startPos: { x: number, y: number }, desiredPos: { x: number, y: number }, currIteration: number ) {
@@ -251,7 +280,6 @@ class Board implements boardInterface{
         }
 
         for (let i = 3; i < config.board.height + 5; i++) { // diagonal down beating
-            console.group()
             for (let j = 0; j < config.board.width * 2; j++) { 
                 const field = this.fields.find((f) => f.position.x === j && f.position.y === i - j)
                 if (!field?.ballCollor) {
@@ -281,13 +309,13 @@ class Board implements boardInterface{
                 tobeatArr = [...candidatesToBeatArr]
                 candidatesToBeatArr = []
             }
-            console.groupEnd()
         }
 
         
 
         
-
+        config.info.score += tobeatArr.length
+        config.info.pointsSpan.innerText = config.info.score + ""
         for (let beatField of tobeatArr) { // perform beating
            beatField.canPlace = true
            beatField.ballCollor = null
@@ -301,6 +329,27 @@ class Board implements boardInterface{
         const wasBeating = this.checkBeating()
         if (!wasBeating) this.randomPlaceBalls()
         
+    }
+
+    endGame() {
+        const endDiv = document.createElement("div")
+        endDiv.classList.add("end-div")
+
+        const h1 = document.createElement("h1")
+        h1.innerText = "Game over!"
+
+        const p = document.createElement("p")
+        p.innerText = "Your scrore: " + config.info.score
+
+        const btn = document.createElement("button")
+        btn.innerText = "Play again"
+        btn.onclick = () => window.location.reload()
+
+        endDiv.appendChild(h1)
+        endDiv.appendChild(p)
+        endDiv.appendChild(btn)
+
+        document.getElementsByTagName("body")[0].appendChild(endDiv)
     }
 
 

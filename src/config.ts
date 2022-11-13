@@ -5,6 +5,12 @@ type colorsMapType = {
 }
 
 export default {
+    info: {
+        pointsSpan: document.getElementById("points") as HTMLSpanElement,
+        score: 0,
+        nextBalls: [] as colorsType[],
+        nextBallsDiv: document.getElementById("nextBalls") as HTMLDivElement
+    },
     board: {
         div: document.getElementById("game") as HTMLDivElement,
         height: 9,
