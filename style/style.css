@@ -21,6 +21,7 @@ body {
     align-items: center;
     justify-content: center;
     width: 70%;
+    max-width: 80vh;
     border: 5px solid black;
     aspect-ratio: 1 / 1;
 }
@@ -29,9 +30,17 @@ body {
     display: flex;
     flex-direction: column;
     width: 20%;
+    max-width: 25vh;
     border: 2px solid tomato;
     aspect-ratio: 1 / 1;
     display: flex;
+}
+
+#info p {
+    position: relative;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2vw;
 }
 
 #nextBalls {
