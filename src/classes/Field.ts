@@ -20,10 +20,10 @@ class Field {
         this.p = null
 
         this.div.classList.add("field")
-        this.div.onmousedown = () => this.onmouseDown()
-        this.div.onmouseenter = () => this.onmouseenter()
-        this.div.onmouseleave = () => this.onmouseleave()
-        this.div.onmouseup = () => this.onmouseup()
+        this.div.onpointerdown = () => this.onmouseDown()
+        this.div.onpointerenter = () => this.onmouseenter()
+        this.div.onpointerleave = () => this.onmouseleave()
+        this.div.onpointerup = () => this.onmouseup()
         config.board.div.appendChild(this.div)
     }
 
