@@ -1,6 +1,7 @@
 # 🎮⚽ **Ball Game** ⚽🎮
 ## Classic internet game in a form of **web application**.
 ## 📱 Works also on mobile devices!
+## 🌐 [Play the game!](http://ball-game.remxin.ct8.pl)
 ## How to play?
 - place 5 balls of the same color in a row/column/diagonally
 - score 1 point for each popped ball
